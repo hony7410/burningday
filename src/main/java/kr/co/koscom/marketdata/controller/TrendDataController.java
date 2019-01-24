@@ -14,6 +14,7 @@ import kr.co.koscom.marketdata.api.LogpressoApiCaller;
 import kr.co.koscom.marketdata.api.MarketDataApiCaller;
 import kr.co.koscom.marketdata.api.TrendDataApiCaller;
 import kr.co.koscom.marketdata.model.SearchData;
+import kr.co.koscom.marketdata.model.TrendData;
 
 @Controller
 public class TrendDataController {
@@ -39,6 +40,29 @@ public class TrendDataController {
     	//Object to JSON in String
     	try {
 			String jsonInString = mapper.writeValueAsString(searchDataArr);
+			System.out.println("I will return");
+			System.out.println(jsonInString);
+			return jsonInString;
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+        return null;
+    }
+    
+    @RequestMapping(path = "/trenddata/trend",
+    		method = { RequestMethod.GET, RequestMethod.POST } )
+    public @ResponseBody String trendJson() {
+    	TrendData[] trendDataArr = trendDataApiCaller.getTrend();
+    	for(TrendData s : trendDataArr){
+    		System.out.println(s.toString());
+    	}
+    	
+    	ObjectMapper mapper = new ObjectMapper();
+    	//Object to JSON in String
+    	try {
+			String jsonInString = mapper.writeValueAsString(trendDataArr);
 			System.out.println("I will return");
 			System.out.println(jsonInString);
 			return jsonInString;

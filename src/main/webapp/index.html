@@ -135,34 +135,19 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
                         <h2 class="post-title">
-                            Hot topic 주식 트랜드 분석
+                            Now Hot Topic
                         </h2>
                         <h3 class="post-subtitle">
-                            hot topic 주식트랜드
+                            Market Topic
                         </h3>
-                    <!-- </a> -->
-                    <!-- <h4 class="post-subtitle">Trend Keyword</h4>  -->
-                    <form name="sentMessage" id="contactForm" novalidate>
-	                    <div class="row control-group">
-	                        <div class="form-group col-xs-12 floating-label-form-group controls">
-	                            <label>Trend Keyword</label>
-	                            <input type="text" class="form-control" placeholder="TrendKeyword" id="trendKeyword" required data-validation-required-message="Please enter your trend keyword.">
-	                            <p class="help-block text-danger"></p>
+                        <div class="row control-group">
+	                        <div id="NowHotTopicDiv" class="form-group col-xs-12 floating-label-form-group controls">
+	                           
 	                        </div>
 	                    </div>
-	                    <div id="success"></div>
-	                    <div class="row">
-	                        <div class="form-group col-xs-12">
-	                            <button id="trendSearch" class="btn btn-default">Search</button>
-	                        </div>
-	                    </div>
-	                    <div class="row">
-	                        <div class="form-group col-xs-12">
-	                            <div id=div1></div>
-	                        </div>
-	                    </div>
-               		</form>
-                    
+	                    
+	                    <hr>
+	                
                     <!-- <a href="post.html"> -->
                         <h2 class="post-title">
                             Hot topic 주식 트랜드 분석
@@ -198,11 +183,11 @@
                 <hr>
                 
                 <!-- Pager -->
-                <ul class="pager">
+                <!-- <ul class="pager">
                     <li class="next">
                         <a href="#">Older Posts &rarr;</a>
                     </li>
-                </ul>
+                </ul> -->
             </div>
         </div>
     </div>
@@ -240,7 +225,7 @@
                             </a>
                         </li>
                     </ul>
-                    <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+                    <p class="copyright text-muted">Copyright &copy; Your Website 2019</p>
                 </div>
             </div>
         </div>
@@ -260,11 +245,43 @@
     <script src="js/clean-blog.min.js"></script>
 
 	<script>
+	
+		$( document ).ready(function() {
+		    console.log( "ready!" );
+		    getTrend();
+		});
+	
+		function getTrend() {
+			$.get("/trenddata/trend/", function(data, status){
+				if (status == "success")
+				{
+					console.info(data);
+					var jsonData = JSON.parse(data);
+					console.info(data.length);
+					var tempCont="";
+					for(var i = 0; i < jsonData.length; i++) {
+					    var obj = jsonData[i];
+						console.log(i);
+					    console.log(obj);
+					    
+					    var keywordz = obj.keywordz;
+					    var keywordzCont="" ;
+					    //for(var j = 0; j < 5; j++) {
+					    for(var j = 0; j < (keywordz.length > 3 ? 3 : keywordz.length); j++) {
+					    	keywordzCont += (keywordz[j].keyword + "(" + keywordz[j].freq + ")   "); 
+					    }
+					    tempCont += "<tr><td>"+ obj.topic +"</td><td>" + keywordzCont + "</td><td>" + obj.score + "</td></tr>";
+					    
+					}
+					var tempHtml = "<table><tr><th>토픽</th><th>관련키워드</th><th>점수</th></tr>" + tempCont + "</table>";
+					$("#NowHotTopicDiv").html(tempHtml);
+				}
+			});
+		}
+	
 		$("#trendSearch").click(function(){
 		  //alert("The paragraph was clicked.");
-			
 			trendSearch();
-		  
 		});
 	
 		function trendSearch() {
@@ -288,7 +305,6 @@
 				}
 
 			});
-
 		}
 	
 	</script>
