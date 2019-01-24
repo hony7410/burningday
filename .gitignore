@@ -20,7 +20,6 @@ Thumbs.db
 # Java
 *.class
 # packages 
-*.jar
 *.war
 *.ear
 
@@ -35,3 +34,7 @@ Thumbs.db
 
 # jME (binaries)
 *.so
+/target/
+
+
+
