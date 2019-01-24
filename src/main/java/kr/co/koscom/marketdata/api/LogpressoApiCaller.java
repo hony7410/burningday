@@ -46,6 +46,19 @@ public class LogpressoApiCaller {
 		return node;
 	}
 	
+	public JsonNode getCompanyByType(String type){
+		String query = "table company_type | search 업종명 == \""+type+"\" | fields 업종명, 종목코드, 종목명, 현재가";
+		JsonNode node = executeQuery(query);
+		return node;
+	}
+	
+	public JsonNode getRecentTrade(String code, int num)
+	{
+		String query = "table marketdata_trade | search 단축코드 == "+code+" | limit 1 | fields 단축코드, 등락율, 현재가";
+		JsonNode node = executeQuery(query);
+		return node;
+	}
+	
 	
 	private JsonNode executeQuery(String query) {
 		
