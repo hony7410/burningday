@@ -133,7 +133,36 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-preview">
+                
+                        <h2 class="post-title">
+                            Hot topic 주식 트랜드 분석
+                        </h2>
+                        <h3 class="post-subtitle">
+                            hot topic 주식트랜드
+                        </h3>
+                    <!-- </a> -->
+                    <!-- <h4 class="post-subtitle">Trend Keyword</h4>  -->
+                    <form name="sentMessage" id="contactForm" novalidate>
+	                    <div class="row control-group">
+	                        <div class="form-group col-xs-12 floating-label-form-group controls">
+	                            <label>Trend Keyword</label>
+	                            <input type="text" class="form-control" placeholder="TrendKeyword" id="trendKeyword" required data-validation-required-message="Please enter your trend keyword.">
+	                            <p class="help-block text-danger"></p>
+	                        </div>
+	                    </div>
+	                    <div id="success"></div>
+	                    <div class="row">
+	                        <div class="form-group col-xs-12">
+	                            <button id="trendSearch" class="btn btn-default">Search</button>
+	                        </div>
+	                    </div>
+	                    <div class="row">
+	                        <div class="form-group col-xs-12">
+	                            <div id=div1></div>
+	                        </div>
+	                    </div>
+               		</form>
+                    
                     <!-- <a href="post.html"> -->
                         <h2 class="post-title">
                             Hot topic 주식 트랜드 분석
@@ -155,6 +184,11 @@
 	                    <div class="row">
 	                        <div class="form-group col-xs-12">
 	                            <button id="trendSearch" class="btn btn-default">Search</button>
+	                        </div>
+	                    </div>
+	                    <div class="row">
+	                        <div class="form-group col-xs-12">
+	                            <div id=div1></div>
 	                        </div>
 	                    </div>
                		</form>
@@ -228,7 +262,7 @@
 	<script>
 		$("#trendSearch").click(function(){
 		  //alert("The paragraph was clicked.");
-		  
+			
 			trendSearch();
 		  
 		});
@@ -239,19 +273,18 @@
 				if (status == "success")
 				{
 					console.info(data);
-					//seriesData[0].push( { x : Date.now(), y : data.trdPrc });
-					seriesData[0].push( { x : xTest++, y : data.trdPrc });
-					console.info(JSON.stringify(seriesData[0]));
-					
-					if(graph_inited)
-						graph.update();
-					else {
-						//yMin = data.hgprc * 0.65;
-						//yMax = data.hgprc * 1.35;
-						yMin = data.trdPrc + 100;
-						yMax = data.trdPrc - 100;
-						init_graph();
+					var jsonData = JSON.parse(data);
+					console.info(data.length);
+					var tempCont="";
+					for(var i = 0; i < jsonData.length; i++) {
+					    var obj = jsonData[i];
+						console.log(i);
+					    console.log(obj);
+					    tempCont += "<tr><td>"+ obj.market +"</td><td>" + obj.name + "</td><td>" + obj.score + "</td></tr>";
+					    					    
 					}
+					var tempHtml = "<table><tr><th>마켓</th><th>종목</th><th>점수</th></tr>" + tempCont + "</table>";
+					$("#div1").html(tempHtml);
 				}
 
 			});
