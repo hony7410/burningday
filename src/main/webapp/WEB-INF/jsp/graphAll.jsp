@@ -239,7 +239,32 @@
 
 <script>
 
-window.onload = function () {
+function getHistoricalData() {
+	
+	$.get("/marketdata/historicalPrice/${marketCode}/${issueCode}", function(data, status){
+		if (status == "success")
+		{
+			console.info(data);
+			var jsonData = JSON.parse(data);
+			console.info(data.length);
+			var tempCont="";
+			for(var i = 0; i < jsonData.length; i++) {
+			    var obj = jsonData[i];
+				console.log(i);
+			    console.log(obj);
+			    //tempCont += "<tr><td>"+ obj.market +"</td><td><a href=\"http://localhost:8080/marketdata/graph/priceAll/"+ obj.market + "/" + obj.symbol + "\">" + obj.name + "</a></td><td>" + obj.score + "</td></tr>";
+			    					    
+			}
+			//var tempHtml = "<table><tr><th>마켓</th><th>종목</th><th>점수</th></tr>" + tempCont + "</table>";
+			//$("#div1").html(tempHtml);
+		}
+
+	});
+}
+
+
+
+function graphDraw() {
 
 	var options = {
 		exportEnabled: true,
@@ -320,6 +345,7 @@ window.onload = function () {
 			]
 		}]
 	};
+	
 	$("#chartContainer").CanvasJSChart(options);
 
 	function toggleDataSeries(e) {
@@ -330,8 +356,7 @@ window.onload = function () {
 		}
 		e.chart.render();
 	}
-
-	}
+}
 
 
 </script>

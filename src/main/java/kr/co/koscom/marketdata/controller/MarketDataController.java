@@ -8,11 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.koscom.marketdata.api.LogpressoApiCaller;
 import kr.co.koscom.marketdata.api.MarketDataApiCaller;
+import kr.co.koscom.marketdata.model.HistoricalData;
 import kr.co.koscom.marketdata.model.Price;
+import kr.co.koscom.marketdata.model.SearchData;
 
 @Controller
 public class MarketDataController {
@@ -56,6 +60,27 @@ public class MarketDataController {
     	// return view
     	return "graphAll";
     }
-    
-  
+      
+    @RequestMapping(path = "/marketdata/historicalPrice/{marketCode}/{issueCode}",
+    		method = { RequestMethod.GET, RequestMethod.POST } )
+    public @ResponseBody String historicalPriceJson(@PathVariable String marketCode, @PathVariable String issueCode) {
+    	HistoricalData[] historicalDataArr = marketDataApiCaller.getHistoricalData(marketCode.toLowerCase(), issueCode, "20190101", "20190231");
+    	for(HistoricalData s : historicalDataArr){
+    		System.out.println(s.toString());
+    	}
+    	
+    	ObjectMapper mapper = new ObjectMapper();
+    	//Object to JSON in String
+    	try {
+			String jsonInString = mapper.writeValueAsString(historicalDataArr);
+			System.out.println("I will return");
+			System.out.println(jsonInString);
+			return jsonInString;
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+        return null;
+    }
  }

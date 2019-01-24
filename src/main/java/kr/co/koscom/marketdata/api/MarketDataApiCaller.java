@@ -127,11 +127,6 @@ public class MarketDataApiCaller {
 
 			return objectMapper.readValue(node.findValue("result").findValue("hisLists").toString(), HistoricalData[].class);
 			
-		
-			
-			
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

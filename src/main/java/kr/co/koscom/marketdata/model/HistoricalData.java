@@ -9,6 +9,7 @@ public class HistoricalData {
 	private int opnprc; // start price
 	private int hgprc; // highest price
 	private int lwprc; // lowest price
+
 	public String getBzDd() {
 		return BzDd;
 	}
