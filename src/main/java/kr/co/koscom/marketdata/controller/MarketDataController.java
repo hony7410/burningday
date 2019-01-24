@@ -1,5 +1,8 @@
 package kr.co.koscom.marketdata.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +19,6 @@ import kr.co.koscom.marketdata.api.LogpressoApiCaller;
 import kr.co.koscom.marketdata.api.MarketDataApiCaller;
 import kr.co.koscom.marketdata.model.HistoricalData;
 import kr.co.koscom.marketdata.model.Price;
-import kr.co.koscom.marketdata.model.SearchData;
 
 @Controller
 public class MarketDataController {
@@ -56,7 +58,7 @@ public class MarketDataController {
         
     	model.addAttribute("issueCode", issueCode);
     	model.addAttribute("marketCode", marketCode);
-    	
+    	model.addAttribute("name", marketDataApiCaller.getCompanyNameById(marketCode,issueCode));
     	// return view
     	return "graphAll";
     }
@@ -64,7 +66,10 @@ public class MarketDataController {
     @RequestMapping(path = "/marketdata/historicalPrice/{marketCode}/{issueCode}",
     		method = { RequestMethod.GET, RequestMethod.POST } )
     public @ResponseBody String historicalPriceJson(@PathVariable String marketCode, @PathVariable String issueCode) {
-    	HistoricalData[] historicalDataArr = marketDataApiCaller.getHistoricalData(marketCode.toLowerCase(), issueCode, "20190101", "20190231");
+    	
+    	String timeStamp = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+    	
+    	HistoricalData[] historicalDataArr = marketDataApiCaller.getHistoricalData(marketCode.toLowerCase(), issueCode, "20190101", timeStamp);
     	for(HistoricalData s : historicalDataArr){
     		System.out.println(s.toString());
     	}
