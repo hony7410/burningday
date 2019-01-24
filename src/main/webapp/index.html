@@ -250,6 +250,32 @@
 		    console.log( "ready!" );
 		    getTrend();
 		});
+		
+		setInterval( function() {
+			getTrend();
+
+		}, 30000 );
+		
+		function getTimeFormat(){
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth() + 1; //January is 0!
+			var yyyy = today.getFullYear();
+			if (dd < 10) {
+			  dd = '0' + dd;
+			} 
+			if (mm < 10) {
+			  mm = '0' + mm;
+			} 
+			
+			var HH = today.getHours();
+			var MM = today.getMinutes();
+			var SS = today.getSeconds();
+			
+			var today = dd + '/' + mm + '/' + yyyy + " " + HH + ":" + MM + ":" + SS;
+			return today;
+		}
+		
 	
 		function getTrend() {
 			$.get("/trenddata/trend/", function(data, status){
@@ -273,7 +299,11 @@
 					    tempCont += "<tr><td>"+ obj.topic +"</td><td>" + keywordzCont + "</td><td>" + obj.score + "</td></tr>";
 					    
 					}
-					var tempHtml = "<table><tr><th>토픽</th><th>관련키워드</th><th>점수</th></tr>" + tempCont + "</table>";
+					
+					
+					var tempHtml = "<h5 class=\"post-subtitle\">" + getTimeFormat() + " 기준 </h5>";  
+					
+					tempHtml += "<table><tr><th>토픽</th><th>관련키워드</th><th>점수</th></tr>" + tempCont + "</table>";
 					$("#NowHotTopicDiv").html(tempHtml);
 				}
 			});
@@ -297,7 +327,7 @@
 					    var obj = jsonData[i];
 						console.log(i);
 					    console.log(obj);
-					    tempCont += "<tr><td>"+ obj.market +"</td><td>" + obj.name + "</td><td>" + obj.score + "</td></tr>";
+					    tempCont += "<tr><td>"+ obj.market +"</td><td><a href=\"http://localhost:8080/marketdata/graph/priceAll/"+ obj.market + "/" + obj.symbol + "\">" + obj.name + "</a></td><td>" + obj.score + "</td></tr>";
 					    					    
 					}
 					var tempHtml = "<table><tr><th>마켓</th><th>종목</th><th>점수</th></tr>" + tempCont + "</table>";
