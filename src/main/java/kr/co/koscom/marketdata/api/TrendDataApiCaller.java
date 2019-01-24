@@ -31,6 +31,7 @@ public class TrendDataApiCaller {
 	
 	private ObjectMapper objectMapper = new ObjectMapper();
 	
+
 	public SearchData[] getSearchData(String keyword)
 	{
 		try {

@@ -20,9 +20,9 @@ public class LogpressoApiCaller {
 	//private static String APIKEY = "02e72b0f-f7c5-c016-8921-4a24d2792849";
 	
 	//로컬피씨
-    private static String URI_PREFIX = "http://192.168.100.151:8888/logpresso/httpexport/query.json";
+    private static String URI_PREFIX = "http://127.0.0.1:8888/logpresso/httpexport/query.json";
 	
-	private static String APIKEY = "3294373c-23de-ec13-753d-3db39abf657e";
+	private static String APIKEY = "d47ecfd3-1b09-93a5-d02f-cccadb52fa20";
 	
 	@Autowired
 	private HttpClientUtil httpClientUtil;
@@ -38,6 +38,12 @@ public class LogpressoApiCaller {
 	    String query = "table marketdata_trade | search 단축코드 == \"005930\"";
     	JsonNode node = executeQuery(query);
     	return node.toString();
+	}
+	
+	public JsonNode getRecentTrade(int num){
+		String query = "table marketdata_trade | limit "+num+" | fields 단축코드, 등락율, 현재가";
+		JsonNode node = executeQuery(query);
+		return node;
 	}
 	
 	
