@@ -138,7 +138,7 @@
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
                     
-                    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                    <div id="chartContainer" style="height: 600px; width: 100%;"></div>
 					
                 
                     <p>Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.</p>
@@ -239,6 +239,12 @@
 
 <script>
 
+$(document).ready(function() {
+	getHistoricalData();
+});
+
+var tradeJson;
+var trendJson;
 function getHistoricalData() {
 	
 	$.get("/marketdata/historicalPrice/${marketCode}/${issueCode}", function(data, status){
@@ -247,30 +253,69 @@ function getHistoricalData() {
 			console.info(data);
 			var jsonData = JSON.parse(data);
 			console.info(data.length);
-			var tempCont="";
-			for(var i = 0; i < jsonData.length; i++) {
-			    var obj = jsonData[i];
-				console.log(i);
-			    console.log(obj);
-			    //tempCont += "<tr><td>"+ obj.market +"</td><td><a href=\"http://localhost:8080/marketdata/graph/priceAll/"+ obj.market + "/" + obj.symbol + "\">" + obj.name + "</a></td><td>" + obj.score + "</td></tr>";
-			    					    
-			}
-			//var tempHtml = "<table><tr><th>마켓</th><th>종목</th><th>점수</th></tr>" + tempCont + "</table>";
-			//$("#div1").html(tempHtml);
+			tradeJson = jsonData;
+			graphDraw(jsonData);
 		}
-
+	});
+	
+	console.log("!!!!!!!!!!!!/trenddata/getNaverTrend/"+${name});
+	
+	$.get("/trenddata/getNaverTrend/"+${name}, function(data, status){
+		if (status == "success")
+		{
+			console.info(data);
+			var jsonData = JSON.parse(data);
+			console.info(data.length);
+			trendJson = jsonData;
+			//graphDraw(jsonData);
+		}
 	});
 }
 
 
+function graphDraw(jsonObj) {
+	var options = {
+		title: {
+			text: ${name}
+		},
+		animationEnabled: true,
+		exportEnabled: true,
+		data: [
+		{
+			type: "spline", //change it to line, area, column, pie, etc
+			dataPoints: [
+				/* { x: 10, y: 10 },
+				{ x: 20, y: 12 },
+				{ x: 30, y: 8 },
+				{ x: 40, y: 14 },
+				{ x: 50, y: 6 },
+				{ x: 60, y: 24 },
+				{ x: 70, y: -4 },
+				{ x: 80, y: 10 } */
+			]
+		}
+		]
+	};
+	
+	
+	for(var i = 0; i < jsonObj.length; i++) {
+	    var obj = jsonObj[i];
+		console.log(i);
+	    console.log(obj);
+	    options.data[0].dataPoints.push( { x : obj.BzDd , y : obj.trdPrc  });
+	    					    
+	}
+	
+	$("#chartContainer").CanvasJSChart(options);
+}
 
-function graphDraw() {
+function graphDraw2() {
 
 	var options = {
 		exportEnabled: true,
 		animationEnabled: true,
 		title:{
-			text: "Units Sold VS Profit"
+			text: "주가 VS 검색트랜드"
 		},
 		subtitles: [{
 			text: "Click Legend to Hide or Unhide Data Series"
