@@ -124,8 +124,14 @@ public class MarketDataApiCaller {
 	        
 			JsonNode node = objectMapper.readTree(sb.toString());
 
-
-			return objectMapper.readValue(node.findValue("result").findValue("hisLists").toString(), HistoricalData[].class);
+			List<JsonNode> l = node.findValue("result").findValues("hisLists");
+			HistoricalData[] retDatas = objectMapper.readValue(node.findValue("result").findValue("hisLists").toString(), HistoricalData[].class);
+			for(int k = 0; k < retDatas.length; k++)
+			{
+				retDatas[k].setBzDd(l.get(0).get(k).findValue("BzDd").toString());
+			}
+			
+			return retDatas;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
