@@ -1,11 +1,10 @@
-package kr.co.koscom.trenddata;
+package kr.co.koscom.marketdata.api;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.co.koscom.marketdata.model.Price;
+import kr.co.koscom.marketdata.model.Keyword;
+import kr.co.koscom.marketdata.model.SearchData;
+import kr.co.koscom.marketdata.model.TrendData;
 import kr.co.koscom.marketdata.util.HttpClientUtil;
 
 public class TrendDataApiCaller {

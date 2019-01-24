@@ -128,10 +128,10 @@ var palette = new Rickshaw.Color.Palette( { scheme: 'classic9' } );
 
 
 
-setInterval( function() {
+/* setInterval( function() {
 	updateGraph();
 
-}, 3000 );
+}, 3000 ); */
 
 var graph, xAxis, yAxis;
 var graph_inited = false;
@@ -146,10 +146,8 @@ function init_graph() {
 		renderer: 'area',
 		stroke: true,
 		preserve: true,
-		//min : yMin,
-		//max : yMax,
-		min : 40000,
-		max : 50000,
+		min : yMin,
+		max : yMax,
 		series: [
 			{
 				color: palette.color(),
@@ -234,7 +232,7 @@ function init_graph() {
 var xTest = 0;
 function updateGraph() {
 	
-	$.get("/marketdata/price/${issueCode}", function(data, status){
+	$.get("/marketdata/priceAll/${issueCode}", function(data, status){
 		if (status == "success")
 		{
 			console.info(data);
@@ -245,10 +243,8 @@ function updateGraph() {
 			if(graph_inited)
 				graph.update();
 			else {
-				//yMin = data.hgprc * 0.65;
-				//yMax = data.hgprc * 1.35;
-				yMin = data.trdPrc + 100;
-				yMax = data.trdPrc - 100;
+				yMin = data.hgprc * 0.65;
+				yMax = data.hgprc * 1.35;
 				init_graph();
 			}
 		}

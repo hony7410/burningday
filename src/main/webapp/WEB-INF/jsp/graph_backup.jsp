@@ -146,10 +146,8 @@ function init_graph() {
 		renderer: 'area',
 		stroke: true,
 		preserve: true,
-		//min : yMin,
-		//max : yMax,
-		min : 40000,
-		max : 50000,
+		min : yMin,
+		max : yMax,
 		series: [
 			{
 				color: palette.color(),
@@ -231,24 +229,20 @@ function init_graph() {
 	graph_inited = true;
 }
 
-var xTest = 0;
 function updateGraph() {
 	
-	$.get("/marketdata/price/${issueCode}", function(data, status){
+	$.get("/marketdata/price/priceAll/${issueCode}", function(data, status){
 		if (status == "success")
 		{
 			console.info(data);
-			//seriesData[0].push( { x : Date.now(), y : data.trdPrc });
-			seriesData[0].push( { x : xTest++, y : data.trdPrc });
+			seriesData[0].push( { x : Date.now(), y : data.trdPrc });
 			console.info(JSON.stringify(seriesData[0]));
 			
 			if(graph_inited)
 				graph.update();
 			else {
-				//yMin = data.hgprc * 0.65;
-				//yMax = data.hgprc * 1.35;
-				yMin = data.trdPrc + 100;
-				yMax = data.trdPrc - 100;
+				yMin = data.opnprc * 0.65;
+				yMax = data.opnprc * 1.35;
 				init_graph();
 			}
 		}

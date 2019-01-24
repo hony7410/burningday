@@ -1,4 +1,4 @@
-package kr.co.koscom.trenddata;
+package kr.co.koscom.marketdata.model;
 
 public class Keyword {
    

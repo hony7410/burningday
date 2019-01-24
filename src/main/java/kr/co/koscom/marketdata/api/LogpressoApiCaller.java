@@ -15,9 +15,14 @@ import kr.co.koscom.marketdata.util.HttpClientUtil;
 @Component
 public class LogpressoApiCaller {
 
-	private static String URI_PREFIX = "http://10.10.10.107:8080/logpresso/httpexport/query.json";
+	//private static String URI_PREFIX = "http://10.10.10.107:8080/logpresso/httpexport/query.json";
 	
-	private static String APIKEY = "02e72b0f-f7c5-c016-8921-4a24d2792849";
+	//private static String APIKEY = "02e72b0f-f7c5-c016-8921-4a24d2792849";
+	
+	//로컬피씨
+    private static String URI_PREFIX = "http://192.168.100.151:8888/logpresso/httpexport/query.json";
+	
+	private static String APIKEY = "3294373c-23de-ec13-753d-3db39abf657e";
 	
 	@Autowired
 	private HttpClientUtil httpClientUtil;
@@ -28,6 +33,13 @@ public class LogpressoApiCaller {
     	String query = "table duration=10m marketdata_trade | search 단축코드 == \"" + issueCode + "\"";
 		return executeQuery(query);
 	}
+	
+	public String test(String issueCode) {
+	    String query = "table marketdata_trade | search 단축코드 == \"005930\"";
+    	JsonNode node = executeQuery(query);
+    	return node.toString();
+	}
+	
 	
 	private JsonNode executeQuery(String query) {
 		

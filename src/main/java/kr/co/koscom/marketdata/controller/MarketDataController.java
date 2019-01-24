@@ -39,11 +39,22 @@ public class MarketDataController {
     	// return view
     	return "graph";
     }
-
+    
     @RequestMapping(path = "/marketdata/log/10m/{issueCode}",
     		method = { RequestMethod.GET, RequestMethod.POST } )
     public @ResponseBody JsonNode log10mJson(@PathVariable String issueCode) {
         return logpressoApiCaller.get10mLog(issueCode);
     }
     
+    @RequestMapping(path = "/marketdata/graph/priceAll/{issueCode}",
+    		method = { RequestMethod.GET, RequestMethod.POST } )
+    public String priceAllJson(@PathVariable String issueCode, Model model) {
+        
+    	model.addAttribute("issueCode", issueCode);
+    	
+    	// return view
+    	return "graphAll";
+    }
+    
+  
  }
