@@ -234,8 +234,8 @@
 		});
 	
 		function trendSearch() {
-			
-			$.get("/marketdata/price/${issueCode}", function(data, status){
+			var trendKeyword = $("#trendKeyword").val();
+			$.get("/trenddata/company/" + trendKeyword, function(data, status){
 				if (status == "success")
 				{
 					console.info(data);

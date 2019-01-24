@@ -8,6 +8,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,7 @@ import kr.co.koscom.marketdata.model.SearchData;
 import kr.co.koscom.marketdata.model.TrendData;
 import kr.co.koscom.marketdata.util.HttpClientUtil;
 
+@Component
 public class TrendDataApiCaller {
 
 	private static String URI_TREND = "https://sandbox-apigw.koscom.co.kr/v2/topics/trending/news/";
@@ -36,7 +38,8 @@ public class TrendDataApiCaller {
 			StringBuilder urlBuilder = new StringBuilder("https://sandbox-apigw.koscom.co.kr/v1/haystack/entities/company/_search");
 		    urlBuilder.append("?");
 		    
-		    urlBuilder.append(URLEncoder.encode("query","UTF-8") + "=" + URLEncoder.encode("미세먼지", "UTF-8") + "&");
+		    //urlBuilder.append(URLEncoder.encode("query","UTF-8") + "=" + URLEncoder.encode("미세먼지", "UTF-8") + "&");
+		    urlBuilder.append(URLEncoder.encode("query","UTF-8") + "=" + URLEncoder.encode(keyword, "UTF-8") + "&");
 		    urlBuilder.append(URLEncoder.encode("apikey","UTF-8") + "=" + URLEncoder.encode("l7xx30a19d389f204686a4b2a0e150ade045", "UTF-8"));
 		    URL url = new URL(urlBuilder.toString());
 		    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -66,11 +69,7 @@ public class TrendDataApiCaller {
 				{
 					return objectMapper.readValue(j.findValue("entities").toString(), SearchData[].class);
 				}
-				
 			}
-			
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
