@@ -243,7 +243,8 @@ $(document).ready(function() {
 	getHistoricalData();
 });
 
-
+var tradeJson;
+var trendJson;
 function getHistoricalData() {
 	
 	$.get("/marketdata/historicalPrice/${marketCode}/${issueCode}", function(data, status){
@@ -252,7 +253,21 @@ function getHistoricalData() {
 			console.info(data);
 			var jsonData = JSON.parse(data);
 			console.info(data.length);
+			tradeJson = jsonData;
 			graphDraw(jsonData);
+		}
+	});
+	
+	console.log("!!!!!!!!!!!!/trenddata/getNaverTrend/"+${name});
+	
+	$.get("/trenddata/getNaverTrend/"+${name}, function(data, status){
+		if (status == "success")
+		{
+			console.info(data);
+			var jsonData = JSON.parse(data);
+			console.info(data.length);
+			trendJson = jsonData;
+			//graphDraw(jsonData);
 		}
 	});
 }

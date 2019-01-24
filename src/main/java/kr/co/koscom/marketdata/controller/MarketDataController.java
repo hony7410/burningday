@@ -69,7 +69,7 @@ public class MarketDataController {
     	
     	String timeStamp = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
     	
-    	HistoricalData[] historicalDataArr = marketDataApiCaller.getHistoricalData(marketCode.toLowerCase(), issueCode, "20190101", timeStamp);
+    	HistoricalData[] historicalDataArr = marketDataApiCaller.getHistoricalData(marketCode.toLowerCase(), issueCode, "20180101", timeStamp);
     	for(HistoricalData s : historicalDataArr){
     		System.out.println(s.toString());
     	}

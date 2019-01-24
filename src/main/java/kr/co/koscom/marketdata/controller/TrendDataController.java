@@ -1,5 +1,8 @@
 package kr.co.koscom.marketdata.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.koscom.marketdata.api.LogpressoApiCaller;
 import kr.co.koscom.marketdata.api.MarketDataApiCaller;
 import kr.co.koscom.marketdata.api.TrendDataApiCaller;
+import kr.co.koscom.marketdata.model.HistoricalData;
 import kr.co.koscom.marketdata.model.SearchData;
 import kr.co.koscom.marketdata.model.TrendData;
 
@@ -74,4 +78,15 @@ public class TrendDataController {
         return null;
     }
     
+   
+    @RequestMapping(path = "/trenddata/getNaverTrend/{name}",
+	method = { RequestMethod.GET, RequestMethod.POST } )
+	public @ResponseBody String getNaverTrendJson(@PathVariable String name) {
+	
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+		
+		String jsonStr = trendDataApiCaller.getNaverTrend(name,timeStamp);
+		
+		return jsonStr;
+	}
  }
