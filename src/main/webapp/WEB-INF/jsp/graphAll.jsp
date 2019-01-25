@@ -90,7 +90,7 @@
                     <span class="sr-only">Toggle navigation</span>
                     Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="/index.html">Start Bootstrap</a>
+                <a class="navbar-brand" href="/index.html">JOY!</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -121,8 +121,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="post-heading">
-                        <h1>주식시세정보</h1>
+                    <div class="site-heading">
+                    	<h1>주식시세정보</h1>
+                        <hr class="small">
                         <h2 class="subheading">현재 주가 및 검색 트랜드</h2>
                         <!-- <span class="meta">Posted by <a href="#">Start Bootstrap</a> on August 24, 2014</span> -->
                     </div>
@@ -141,30 +142,18 @@
                     <div id="chartContainer" style="height: 600px; width: 100%;"></div>
 					
                 
-                    <p>Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.</p>
+                    <p>Koscom 주식시세 정보 Open Api 와 Naver 검색 트랜드 Open Api를 통해 주식 시세와 트랜드를 </p>
 
-                    <p>Science cuts two ways, of course; its products can be used for both good and evil. But there's no turning back from science. The early warnings about technological dangers also come from science.</p>
+                    <p>비교하여 상관관계를 분석하는데 목표가 있습니다.</p>
 
-                    <p>What was most significant about the lunar voyage was not that man set foot on the Moon but that they set eye on the earth.</p>
+                    <h2 class="section-heading">Koscom 주식시세 API</h2>
 
-                    <p>A Chinese tale tells of some men sent to harm a young girl who, upon seeing her beauty, become her protectors rather than her violators. That's how I felt seeing the Earth for the first time. I could not help but love and cherish her.</p>
+                    <p>https://developers.koscom.co.kr/</p>
 
-                    <p>For those who have seen the Earth from space, and for the hundreds and perhaps thousands more who will, the experience most certainly changes your perspective. The things that we share in our world are far more valuable than those which divide us.</p>
+                    <h2 class="section-heading">Naver 검색트랜드 API</h2>
 
-                    <h2 class="section-heading">The Final Frontier</h2>
-
-                    <p>There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.</p>
-
-                    <p>There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it is a task to occupy the generations. And no matter how much progress one makes, there is always the thrill of just beginning.</p>
-
-                    <blockquote>The dreams of yesterday are the hopes of today and the reality of tomorrow. Science has not yet mastered prophecy. We predict too much for the next year and yet far too little for the next ten.</blockquote>
-
-                    <p>Spaceflights cannot be stopped. This is not the work of any one man or even a group of men. It is a historical process which mankind is carrying out in accordance with the natural laws of human development.</p>
-
-                    <h2 class="section-heading">Reaching for the Stars</h2>
-
-                    <p>As we got further and further away, it [the Earth] diminished in size. Finally it shrank to the size of a marble, the most beautiful you can imagine. That beautiful, warm, living object looked so fragile, so delicate, that if you touched it with a finger it would crumble and fall apart. Seeing this has to change a man.</p>
-
+                    <p>https://developers.naver.com/docs/datalab/search/</p>
+<!-- 
                     <a href="#">
                         <img class="img-responsive" src="/img/post-sample-image.jpg" alt="">
                     </a>
@@ -175,6 +164,7 @@
                     <p>As I stand out here in the wonders of the unknown at Hadley, I sort of realize there’s a fundamental truth to our nature, Man must explore, and this is exploration at its greatest.</p>
 
                     <p>Placeholder text by <a href="http://spaceipsum.com/">Space Ipsum</a>. Photographs by <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>.</p>
+ -->                
                 </div>
             </div>
         </div>
@@ -243,6 +233,10 @@ $(document).ready(function() {
 	getHistoricalData();
 });
 
+setTimeout(function () {
+	graphDraw2();
+}, 2000);
+
 var tradeJson;
 var trendJson;
 function getHistoricalData() {
@@ -254,7 +248,7 @@ function getHistoricalData() {
 			var jsonData = JSON.parse(data);
 			console.info(data.length);
 			tradeJson = jsonData;
-			graphDraw(jsonData);
+			//graphDraw(tradeJson);
 		}
 	});
 	
@@ -270,6 +264,7 @@ function getHistoricalData() {
 			//graphDraw(jsonData);
 		}
 	});
+	
 }
 
 
@@ -299,10 +294,16 @@ function graphDraw(jsonObj) {
 	
 	
 	for(var i = 0; i < jsonObj.length; i++) {
-	    var obj = jsonObj[i];
+	    var obj = jsonObj[jsonObj.length-i-1];
 		console.log(i);
 	    console.log(obj);
-	    options.data[0].dataPoints.push( { x : obj.BzDd , y : obj.trdPrc  });
+	    //options.data[0].dataPoints.push( { x : obj.bzDd , y : obj.trdPrc  });
+	    
+	    //var d = new Date("2015-03-25");
+	    var strDateFormat = obj.bzDd.substring(0, 4) + "-" + obj.bzDd.substring(4, 6) + "-" + obj.bzDd.substring(6, 8) ;
+	    
+	    //options.data[0].dataPoints.push( { x : Number(obj.bzDd) , y : obj.trdPrc  });
+	    options.data[0].dataPoints.push( { x : new Date(strDateFormat) , y : obj.trdPrc  });
 	    					    
 	}
 	
@@ -310,6 +311,121 @@ function graphDraw(jsonObj) {
 }
 
 function graphDraw2() {
+
+	var options = {
+		exportEnabled: true,
+		animationEnabled: true,
+		title:{
+			text: ${name}
+		},
+		subtitles: [{
+			text: "주식시세 및 검색 트랜드 상관관계"
+		}],
+		axisX: {
+			title: "날짜"
+		},
+		axisY: {
+			title: "주식시세",
+			titleFontColor: "#4F81BC",
+			lineColor: "#4F81BC",
+			labelFontColor: "#4F81BC",
+			tickColor: "#4F81BC",
+			includeZero: false
+		},
+		axisY2: {
+			title: "트랜드 상대지수",
+			titleFontColor: "#C0504E",
+			lineColor: "#C0504E",
+			labelFontColor: "#C0504E",
+			tickColor: "#C0504E",
+			includeZero: false
+		},
+		toolTip: {
+			shared: true
+		},
+		legend: {
+			cursor: "pointer",
+			itemclick: toggleDataSeries
+		},
+		data: [{
+			type: "spline",
+			name: "주식시세",
+			showInLegend: true,
+			xValueFormatString: "MMM YYYY",
+			yValueFormatString: "#,##0 Units",
+			dataPoints: [
+				/* { x: new Date(2016, 0, 1),  y: 120 },
+				{ x: new Date(2016, 1, 1), y: 135 },
+				{ x: new Date(2016, 2, 1), y: 144 },
+				{ x: new Date(2016, 3, 1),  y: 103 },
+				{ x: new Date(2016, 4, 1),  y: 93 },
+				{ x: new Date(2016, 5, 1),  y: 129 },
+				{ x: new Date(2016, 6, 1), y: 143 },
+				{ x: new Date(2016, 7, 1), y: 156 },
+				{ x: new Date(2016, 8, 1),  y: 122 },
+				{ x: new Date(2016, 9, 1),  y: 106 },
+				{ x: new Date(2016, 10, 1),  y: 137 },
+				{ x: new Date(2016, 11, 1), y: 142 } */
+			]
+		},
+		{
+			type: "spline",
+			name: "트랜드",
+			axisYType: "secondary",
+			showInLegend: true,
+			xValueFormatString: "MMM YYYY",
+			yValueFormatString: "$#,##0.#",
+			dataPoints: [
+				/* { x: new Date(2016, 0, 1),  y: 19034.5 },
+				{ x: new Date(2016, 1, 1), y: 20015 },
+				{ x: new Date(2016, 2, 1), y: 27342 },
+				{ x: new Date(2016, 3, 1),  y: 20088 },
+				{ x: new Date(2016, 4, 1),  y: 20234 },
+				{ x: new Date(2016, 5, 1),  y: 29034 },
+				{ x: new Date(2016, 6, 1), y: 30487 },
+				{ x: new Date(2016, 7, 1), y: 32523 },
+				{ x: new Date(2016, 8, 1),  y: 20234 },
+				{ x: new Date(2016, 9, 1),  y: 27234 },
+				{ x: new Date(2016, 10, 1),  y: 33548 },
+				{ x: new Date(2016, 11, 1), y: 32534 } */
+			]
+		}]
+	};
+	
+	//주식시세 
+	for(var i = 0; i < tradeJson.length; i++) {
+	    var obj = tradeJson[tradeJson.length-i-1];
+	    console.log("주식시세");
+		console.log(i);
+	    console.log(obj);
+	    var strDateFormat = obj.bzDd.substring(0, 4) + "-" + obj.bzDd.substring(4, 6) + "-" + obj.bzDd.substring(6, 8) ;
+	    options.data[0].dataPoints.push( { x : new Date(strDateFormat) , y : obj.trdPrc  });
+	}
+	
+	//트랜드 예시
+	//{"startDate":"2019-01-01","endDate":"2019-01-25","timeUnit":"date","results":[{"title":"큐로홀딩스","keywords":["큐로홀딩스"],"data":[{"period":"2019-01-01","ratio":10.44776},{"period":"2019-01-02","ratio":46.26865},{"period":"2019-01-03","ratio":50.74626},{"period":"2019-01-04","ratio":43.28358},{"period":"2019-01-05","ratio":4.47761},{"period":"2019-01-06","ratio":17.91044},{"period":"2019-01-07","ratio":32.83582},{"period":"2019-01-08","ratio":64.1791},{"period":"2019-01-09","ratio":73.13432},{"period":"2019-01-10","ratio":47.76119},{"period":"2019-01-11","ratio":49.25373},{"period":"2019-01-12","ratio":8.95522},{"period":"2019-01-13","ratio":10.44776},{"period":"2019-01-14","ratio":49.25373},{"period":"2019-01-15","ratio":46.26865},{"period":"2019-01-16","ratio":50.74626},{"period":"2019-01-17","ratio":40.2985},{"period":"2019-01-18","ratio":55.22388},{"period":"2019-01-19","ratio":7.46268},{"period":"2019-01-20","ratio":5.97014},{"period":"2019-01-21","ratio":26.86567},{"period":"2019-01-22","ratio":37.31343},{"period":"2019-01-23","ratio":61.19402},{"period":"2019-01-24","ratio":100}]}]}
+	for(var i = 0; i < trendJson.results[0].data.length; i++) {
+	    var obj = trendJson.results[0].data[i];
+	    console.log("트랜드");
+		console.log(i);
+	    console.log(obj);
+	    options.data[1].dataPoints.push( { x : new Date(obj.period) , y : obj.ratio  });
+	}
+		
+	$("#chartContainer").CanvasJSChart(options);
+
+	function toggleDataSeries(e) {
+		if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+			e.dataSeries.visible = false;
+		} else {
+			e.dataSeries.visible = true;
+		}
+		e.chart.render();
+	}
+}
+
+
+function graphDraw3(tradeJson, trendJson) {
 
 	var options = {
 		exportEnabled: true,
@@ -402,7 +518,6 @@ function graphDraw2() {
 		e.chart.render();
 	}
 }
-
 
 </script>
 </body>
