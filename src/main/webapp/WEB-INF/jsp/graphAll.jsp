@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>시세정보 조이</title>
+    <title>투자분석 PlayCHECK</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -102,12 +102,12 @@
                     <li>
                         <a href="/game.html">Lucky Game</a>
                     </li>
-                    <!-- <li>
-                        <a href="post.html">Sample Post</a>
+                    <li>
+                        <a href="/post.html">My Menu</a>
                     </li>
                     <li>
-                        <a href="contact.html">Contact</a>
-                    </li> -->
+                        <a href="/contact.html">Contact</a>
+                    </li> 
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -140,7 +140,15 @@
                 
                     
                     <div id="chartContainer" style="height: 600px; width: 100%;"></div>
+                    
+                    <hr>
+                    <hr>
+                    
+                    
+                    <div id="chartContainerRSI" style="height: 600px; width: 100%;"></div>
 					
+					<hr>
+                    <hr>
                 
                     <p>Koscom 주식시세 정보 Open Api 와 Naver 검색 트렌드 Open Api를 통해 주식 시세와 트렌드를 비교하여 상관관계를 분석하는데 목표가 있습니다.</p>
 
@@ -151,6 +159,11 @@
                     <h2 class="section-heading">Naver 검색트렌드 API</h2>
 
                     <p>https://developers.naver.com/docs/datalab/search/</p>
+                    
+                    <h2 class="section-heading">Koscom 주식시세 API</h2>
+                    
+                    <p>RSI(Relative Strength Index)는 주식, 선물, 옵션 등의 기술적 분석에 사용되는 보조지표, RSI는 가격의 상승압력과 하락압력 간의 상대적인 강도를 나타내며 1978년 미국의 월레스 와일더(J. Welles Wilder Jr.)가 개발했습니다.</p>
+                    
 <!-- 
                     <a href="#">
                         <img class="img-responsive" src="/img/post-sample-image.jpg" alt="">
@@ -233,10 +246,13 @@ $(document).ready(function() {
 
 setTimeout(function () {
 	graphDraw2();
+	graphDrawRSI();
 }, 1000);
 
 var tradeJson;
 var trendJson;
+var RSIJson;
+
 function getHistoricalData() {
 	
 	$.get("/marketdata/historicalPrice/${marketCode}/${issueCode}", function(data, status){
@@ -260,6 +276,18 @@ function getHistoricalData() {
 			console.info(data.length);
 			trendJson = jsonData;
 			//graphDraw(jsonData);
+		}
+	});
+	
+	$.get("/marketdata/analyze/${marketCode}/${issueCode}/20181101/20190124", function(data, status){
+		if (status == "success")
+		{
+			console.info("RSI!!!!");
+			console.info(data);
+			var jsonData = JSON.parse(data);
+			console.info(data.length);
+			RSIJson = jsonData;
+			//graphDraw(tradeJson);
 		}
 	});
 	
@@ -331,11 +359,15 @@ function graphDraw2() {
 			includeZero: false
 		},
 		axisY2: {
-			title: "트렌드 상대지수",
-			titleFontColor: "#C0504E",
+			title: "NAVER 검색 트렌드 상대지수",
+			/* titleFontColor: "#C0504E",
 			lineColor: "#C0504E",
 			labelFontColor: "#C0504E",
-			tickColor: "#C0504E",
+			tickColor: "#C0504E", */
+			titleFontColor: "#03CF5D",
+			lineColor: "#03CF5D",
+			labelFontColor: "#03CF5D",
+			tickColor: "#03CF5D",
 			includeZero: false
 		},
 		toolTip: {
@@ -368,7 +400,7 @@ function graphDraw2() {
 		},
 		{
 			type: "spline",
-			name: "트렌드",
+			name: "NAVER 검색 트렌드",
 			axisYType: "secondary",
 			showInLegend: true,
 			xValueFormatString: "YYYY-MM-DD",
@@ -421,6 +453,124 @@ function graphDraw2() {
 		e.chart.render();
 	}
 }
+
+
+
+
+function graphDrawRSI() {
+
+	var options = {
+		exportEnabled: true,
+		animationEnabled: true,
+		title:{
+			text: ${name}
+		},
+		subtitles: [{
+			text: "주식시세 및 RSI 상관관계"
+		}],
+		axisX: {
+			title: "날짜"
+		},
+		axisY: {
+			title: "주식시세",
+			titleFontColor: "#4F81BC",
+			lineColor: "#4F81BC",
+			labelFontColor: "#4F81BC",
+			tickColor: "#4F81BC",
+			includeZero: false
+		},
+		axisY2: {
+			title: "RSI",
+			titleFontColor: "#C0504E",
+			lineColor: "#C0504E",
+			labelFontColor: "#C0504E",
+			tickColor: "#C0504E",
+			includeZero: false
+		},
+		toolTip: {
+			shared: true
+		},
+		legend: {
+			cursor: "pointer",
+			itemclick: toggleDataSeries
+		},
+		data: [{
+			type: "spline",
+			name: "주식시세",
+			showInLegend: true,
+			xValueFormatString: "YYYY-MM-DD",
+			yValueFormatString: "#,### 원",
+			dataPoints: [
+				/* { x: new Date(2016, 0, 1),  y: 120 },
+				{ x: new Date(2016, 1, 1), y: 135 },
+				{ x: new Date(2016, 2, 1), y: 144 },
+				{ x: new Date(2016, 3, 1),  y: 103 },
+				{ x: new Date(2016, 4, 1),  y: 93 },
+				{ x: new Date(2016, 5, 1),  y: 129 },
+				{ x: new Date(2016, 6, 1), y: 143 },
+				{ x: new Date(2016, 7, 1), y: 156 },
+				{ x: new Date(2016, 8, 1),  y: 122 },
+				{ x: new Date(2016, 9, 1),  y: 106 },
+				{ x: new Date(2016, 10, 1),  y: 137 },
+				{ x: new Date(2016, 11, 1), y: 142 } */
+			]
+		},
+		{
+			type: "spline",
+			name: "RSI 지수",
+			axisYType: "secondary",
+			showInLegend: true,
+			xValueFormatString: "YYYY-MM-DD",
+			yValueFormatString: "######.00",
+			dataPoints: [
+				/* { x: new Date(2016, 0, 1),  y: 19034.5 },
+				{ x: new Date(2016, 1, 1), y: 20015 },
+				{ x: new Date(2016, 2, 1), y: 27342 },
+				{ x: new Date(2016, 3, 1),  y: 20088 },
+				{ x: new Date(2016, 4, 1),  y: 20234 },
+				{ x: new Date(2016, 5, 1),  y: 29034 },
+				{ x: new Date(2016, 6, 1), y: 30487 },
+				{ x: new Date(2016, 7, 1), y: 32523 },
+				{ x: new Date(2016, 8, 1),  y: 20234 },
+				{ x: new Date(2016, 9, 1),  y: 27234 },
+				{ x: new Date(2016, 10, 1),  y: 33548 },
+				{ x: new Date(2016, 11, 1), y: 32534 } */
+			]
+		}]
+	};
+	
+	//주식시세 
+	for(var i = 0; i < RSIJson.length; i++) {
+	    var obj = RSIJson[i];
+	    //[{rsi: -1, date: "20181210", price: 77700},...]
+	    
+	    console.log("RSI");
+		console.log(i);
+	    console.log(obj);
+	    var strDateFormat = obj.date.substring(0, 4) + "-" + obj.date.substring(4, 6) + "-" + obj.date.substring(6, 8) ;
+	    if(obj.date.substring(0, 4) == "2019"){
+		    options.data[0].dataPoints.push( { x : new Date(strDateFormat) , y : obj.price  });
+		    options.data[1].dataPoints.push( { x : new Date(strDateFormat) , y : obj.rsi  });
+	    }
+	}
+	
+	$("#chartContainerRSI").CanvasJSChart(options);
+
+	function toggleDataSeries(e) {
+		if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+			e.dataSeries.visible = false;
+		} else {
+			e.dataSeries.visible = true;
+		}
+		e.chart.render();
+	}
+}
+
+
+
+
+
+
 
 
 function graphDraw3(tradeJson, trendJson) {

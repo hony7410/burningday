@@ -49,7 +49,7 @@ public class MarketDataController {
     }
     @RequestMapping(path = "/marketdata/analyze/{marketCode}/{issueCode}/{from}/{to}",
     		method = { RequestMethod.GET, RequestMethod.POST } )
-    public String getRSIChart(@PathVariable String marketCode, @PathVariable String issueCode, @PathVariable String from, @PathVariable String to) {
+    public @ResponseBody String getRSIChart(@PathVariable String marketCode, @PathVariable String issueCode, @PathVariable String from, @PathVariable String to) {
     	
     	to = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
     	
@@ -82,10 +82,16 @@ public class MarketDataController {
     		
     		s += "\"date\" : \"" + his[hisIndex-k].getBzDd() + "\",";
     		s += "\"price\" : " + his[hisIndex-k].getTrdPrc();
-    		s += "},";
+    		
+    		if(k==his.length-1){
+    			s += "}";
+    		}else{
+    			s += "},";
+    		}
     	}
     	s+= "]";
     	
+    	System.out.println(s);
     	
     	return s;
     }
