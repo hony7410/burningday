@@ -103,12 +103,12 @@
                     <li>
                         <a href="game.html">Lucky Game</a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="post.html">Sample Post</a>
                     </li>
                     <li>
                         <a href="contact.html">Contact</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -232,11 +232,15 @@
 		        //alert("test");
 		        if(!fortuneCookieOpen){
 		        	fortuneCookieRecc();
-			    	$("#fortuneCookie").attr('src',"/img/2.png");
+		        	$("#fortuneCookie").fadeOut();
+					$("#fortuneCookie").attr('src',"/img/2.png");
+					$("#fortuneCookie").fadeIn();
 			    	fortuneCookieOpen = true;
 			    	return false;
 		        }else{
+		        	$("#fortuneCookie").fadeOut();
 		        	$("#fortuneCookie").attr('src',"/img/1.png");
+					$("#fortuneCookie").fadeIn();
 			    	fortuneCookieOpen = false;
 		        }
 		    	

@@ -103,12 +103,12 @@
                     <li>
                         <a href="/game.html">Lucky Game</a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="post.html">Sample Post</a>
                     </li>
                     <li>
                         <a href="contact.html">Contact</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -142,7 +142,7 @@
                             Now Hot Topic
                         </h2>
                         <h3 class="post-subtitle">
-                            Market Topic
+                            Market Topic <img id="refresh" width="35" height="25" src="/img/refresh.png"/>
                         </h3>
                         <!-- <div class="row control-group">
 	                        <div id="NowHotTopicDiv" class="form-group col-xs-12 floating-label-form-group controls">
@@ -257,6 +257,8 @@
 		$( document ).ready(function() {
 		    console.log( "ready!" );
 		    getTrend();
+		    
+		    
 		});
 		
 		setInterval( function() {
@@ -309,9 +311,9 @@
 					}
 					
 					
-					var tempHtml = "<h5 class=\"post-subtitle\">" + getTimeFormat() + " 기준 </h5>";  
+					var tempHtml = "<h5 class=\"post-subtitle\">" + getTimeFormat() + " 기준  </h5>";  
 					
-					tempHtml += "<table class=\"table100.ver1\" width=\"100%\"><tr><th>토픽</th><th>관련키워드</th><th>점수</th></tr>" + tempCont + "</table>";
+					tempHtml += "<table class=\"table100.ver1\" width=\"100%\"><thead><tr><th>토픽</th><th>관련키워드</th><th>점수</th></tr></thead>" + tempCont + "</table>";
 					$("#NowHotTopicDiv").html(tempHtml);
 				}
 			});
@@ -322,6 +324,15 @@
 			trendSearch();
 		});
 	
+		$("#refresh").click(function(){
+			//alert("test");
+			getTrend();
+			$("#refresh").fadeOut();
+			$("#refresh").fadeIn();
+			$("#NowHotTopicDiv").fadeOut();
+			$("#NowHotTopicDiv").fadeIn();
+		});
+		
 		function trendSearch() {
 			var trendKeyword = $("#trendKeyword").val();
 			$.get("/trenddata/company/" + trendKeyword, function(data, status){
@@ -338,7 +349,7 @@
 					    tempCont += "<tr><td>"+ obj.market +"</td><td><a href=\"http://localhost:8080/marketdata/graph/priceAll/"+ obj.market + "/" + obj.symbol + "\">" + obj.name + "</a></td><td>" + obj.score + "</td></tr>";
 					    					    
 					}
-					var tempHtml = "<table class=\"table100.ver1\" width=\"100%\"><tr><th>마켓</th><th>종목</th><th>점수</th></tr>" + tempCont + "</table>";
+					var tempHtml = "<table class=\"table100.ver1\" width=\"100%\"><thead><tr><th>마켓</th><th>종목</th><th>점수</th></tr></thead>" + tempCont + "</table>";
 					$("#div1").html(tempHtml);
 				}
 
