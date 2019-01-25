@@ -126,9 +126,9 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading">
-                        <h1><img width="50" height="50" src="/img/koscomci.png"/>투자게임</h1>
+                        <h1><img width="50" height="50" src="/img/koscomci.png"/>투자게임 2</h1>
                         <hr class="small">
-                        <span class="subheading">Fortune cookie</span>
+                        <span class="subheading">예상주가 맞추기</span>
                     </div>
                 </div>
             </div>
@@ -303,9 +303,15 @@
 				},
 				animationEnabled: true,
 				exportEnabled: true,
+				axisY:{
+					includeZero: false,
+				},
 				data: [
 				{
 					type: "spline", //change it to line, area, column, pie, etc
+					showInLegend: true,
+					xValueFormatString: "YYYY-MM-DD",
+					yValueFormatString: "#,### 원",
 					dataPoints: [
 						/* { x: 10, y: 10 },
 						{ x: 20, y: 12 },
