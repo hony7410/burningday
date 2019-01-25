@@ -123,7 +123,7 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading">
-                        <h1>투자게임</h1>
+                        <h1><img width="50" height="50" src="/img/koscomci.png"/>투자게임</h1>
                         <hr class="small">
                         <span class="subheading">Fortune cookie</span>
                     </div>
@@ -145,7 +145,7 @@
                         </h3>
                         <div class="row control-group">
 	                        <div id="fortuneCookieDiv" class="form-group col-xs-12 floating-label-form-group controls">
-	                        	<a><img id=fortuneCookie class="Image" src="/img/fortunecookie.jpg"></a>
+	                        	<a><img id=fortuneCookie class="Image" src="/img/1.png"></a>
 	                        </div>
 	                    </div>
 	                    <div class="row">
@@ -223,15 +223,23 @@
 
 	<script>
 	
+		var fortuneCookieOpen = false;
 		$( document ).ready(function() {
 		    console.log( "ready!" );
 		    //getTrend();
 		    
 		    $("#fortuneCookie").on('click', function() {
 		        //alert("test");
-		        
-		    	fortuneCookieRecc();
-		        
+		        if(!fortuneCookieOpen){
+		        	fortuneCookieRecc();
+			    	$("#fortuneCookie").attr('src',"/img/2.png");
+			    	fortuneCookieOpen = true;
+			    	return false;
+		        }else{
+		        	$("#fortuneCookie").attr('src',"/img/1.png");
+			    	fortuneCookieOpen = false;
+		        }
+		    	
 		    });
 		    
 		});
@@ -251,6 +259,8 @@
 					$("#fortuneCookieRecommand").html(tempHtml); 
 				}
 			});
+			
+			
 		}
 		
 		function getTimeFormat(){

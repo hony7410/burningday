@@ -122,7 +122,7 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading">
-                    	<h1>주식시세정보</h1>
+                    	<h1><img width="50" height="50" src="/img/koscomci.png"/>주식시세정보</h1>
                         <hr class="small">
                         <h2 class="subheading">현재 주가 및 검색 트렌드</h2>
                         <!-- <span class="meta">Posted by <a href="#">Start Bootstrap</a> on August 24, 2014</span> -->
