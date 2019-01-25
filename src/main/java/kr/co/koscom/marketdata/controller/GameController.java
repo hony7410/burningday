@@ -41,6 +41,7 @@ public class GameController {
 		String name = marketCaller.getCompanyNameById(node.get(rnd).findValue("단축코드").toString());
 		result = result.replace("}", " ,\"회사이름\" : "+name+"}");
 		
+		
 		return result;
 		
 	}

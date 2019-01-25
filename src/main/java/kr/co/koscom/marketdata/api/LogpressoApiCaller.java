@@ -29,6 +29,11 @@ public class LogpressoApiCaller {
 	
 	private ObjectMapper objectMapper = new ObjectMapper();
 	
+	public JsonNode getMinutePrice(String issueCode, String hhmm){
+		String query = "table marketdata_trade  | eval minute =  floor(int(체결시간) / 10000)  | search minute == "+hhmm+" | search 단축코드 == \""+issueCode+"\" | limit 1 | fields 단축코드, 체결시간, 현재가";
+    	JsonNode node = executeQuery(query);
+    	return node;
+	}
 	public JsonNode get10mLog(String issueCode) {
     	String query = "table duration=10m marketdata_trade | search 단축코드 == \"" + issueCode + "\"";
 		return executeQuery(query);
