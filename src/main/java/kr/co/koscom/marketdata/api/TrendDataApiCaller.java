@@ -1,8 +1,10 @@
 package kr.co.koscom.marketdata.api;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -144,7 +146,11 @@ public class TrendDataApiCaller {
         
         try {
             String apiURL = "https://openapi.naver.com/v1/datalab/search";
-            String body = "{\"startDate\":\"2017-01-01\",\"endDate\":\"2017-04-30\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"한글\",\"keywords\":[\"한글\",\"korean\"]},{\"groupName\":\"영어\",\"keywords\":[\"영어\",\"english\"]}],\"device\":\"pc\",\"ages\":[\"1\",\"2\"],\"gender\":\"f\"}";
+            //String body = "{\"startDate\":\"2017-01-01\",\"endDate\":\"2017-04-30\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"한글\",\"keywords\":[\"한글\",\"korean\"]},{\"groupName\":\"영어\",\"keywords\":[\"영어\",\"english\"]}],\"device\":\"pc\",\"ages\":[\"1\",\"2\"],\"gender\":\"f\"}";
+            //String body = "{\"startDate\":\"2018-01-01\",\"endDate\":\""+endDate+"\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"코웨이\",\"keywords\":[\"코웨이\"]}],\"device\":\"pc\",\"ages\":[\"4\",\"5\",\"6\",\"7\"],\"gender\":[\"f\",\"m\"]}";
+            //String body = "{\"startDate\":\"2019-01-01\",\"endDate\":\"2019-01-24\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"한글\",\"keywords\":[\"한글\",\"korean\"]},{\"groupName\":\"영어\",\"keywords\":[\"영어\",\"english\"]}],\"device\":\"pc\",\"ages\":[\"1\",\"2\"],\"gender\":\"f\"}";
+            String body = "{\"startDate\":\"2019-01-01\",\"endDate\":\""+endDate+"\",\"timeUnit\":\"date\",\"keywordGroups\":[{\"groupName\":\""+ name +"\",\"keywords\":[\""+ name +"\"]}],\"device\":\"pc\",\"ages\":[\"4\",\"5\",\"6\",\"7\"],\"gender\":\"m\"}";
+            
             URL url = new URL(apiURL);
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
@@ -153,11 +159,19 @@ public class TrendDataApiCaller {
             con.setRequestProperty("Content-Type", "application/json");
 
             con.setDoOutput(true);
-            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            /*DataOutputStream wr = new DataOutputStream(con.getOutputStream());
             wr.writeBytes(body);
             wr.flush();
             wr.close();
-
+            */
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(wr, "UTF-8"));
+            writer.write(body);
+            writer.flush();
+            writer.close();
+            wr.close();
+                      
+            
             int responseCode = con.getResponseCode();
             BufferedReader br;
             if(responseCode==200) { // 정상 호출
