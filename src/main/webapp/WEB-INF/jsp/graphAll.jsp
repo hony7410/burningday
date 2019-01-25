@@ -102,12 +102,12 @@
                     <li>
                         <a href="/game.html">Lucky Game</a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="post.html">Sample Post</a>
                     </li>
                     <li>
                         <a href="contact.html">Contact</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -349,8 +349,8 @@ function graphDraw2() {
 			type: "spline",
 			name: "주식시세",
 			showInLegend: true,
-			xValueFormatString: "MMM YYYY",
-			yValueFormatString: "#,##0 Units",
+			xValueFormatString: "YYYY-MM-DD",
+			yValueFormatString: "#,### 원",
 			dataPoints: [
 				/* { x: new Date(2016, 0, 1),  y: 120 },
 				{ x: new Date(2016, 1, 1), y: 135 },
@@ -371,8 +371,8 @@ function graphDraw2() {
 			name: "트렌드",
 			axisYType: "secondary",
 			showInLegend: true,
-			xValueFormatString: "MMM YYYY",
-			yValueFormatString: "$#,##0.#",
+			xValueFormatString: "YYYY-MM-DD",
+			yValueFormatString: "######.00",
 			dataPoints: [
 				/* { x: new Date(2016, 0, 1),  y: 19034.5 },
 				{ x: new Date(2016, 1, 1), y: 20015 },
