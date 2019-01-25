@@ -249,7 +249,7 @@ $(document).ready(function() {
 setTimeout(function () {
 	graphDraw2();
 	graphDrawRSI();
-}, 1000);
+}, 2000);
 
 var tradeJson;
 var trendJson;
@@ -362,10 +362,6 @@ function graphDraw2() {
 		},
 		axisY2: {
 			title: "NAVER 검색 트렌드 상대지수",
-			/* titleFontColor: "#C0504E",
-			lineColor: "#C0504E",
-			labelFontColor: "#C0504E",
-			tickColor: "#C0504E", */
 			titleFontColor: "#03CF5D",
 			lineColor: "#03CF5D",
 			labelFontColor: "#03CF5D",
@@ -403,6 +399,7 @@ function graphDraw2() {
 		{
 			type: "spline",
 			name: "NAVER 검색 트렌드",
+			color: "#03CF5D",
 			axisYType: "secondary",
 			showInLegend: true,
 			xValueFormatString: "YYYY-MM-DD",

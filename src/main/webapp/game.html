@@ -259,7 +259,7 @@
 					console.info(data);
 					//예제 {"등락율":"3.11","단축코드":"002990","현재가":"13250" ,"회사이름" : "금호산업"}
 					var jsonData = JSON.parse(data);
-					var tempCont = ("<tr><td><a href=\"http://localhost:8080/marketdata/graph/priceAll/"+ "kospi" + "/" + jsonData.회사이름 + "\">" + jsonData.회사이름 + "</a></td>" + "<td>"+ jsonData.현재가 +"</td><td>" + jsonData.등락율 + "</td></tr>");
+					var tempCont = ("<tr><td><a href=\"http://localhost:8080/marketdata/graph/priceAll/"+ "kospi" + "/" + jsonData.단축코드 + "\">" + jsonData.회사이름 + "</a></td>" + "<td>"+ jsonData.현재가 +"</td><td>" + jsonData.등락율 + "</td></tr>");
 					var tempHtml = "<h5 class=\"post-subtitle\">" + getTimeFormat() + " 기준 </h5>";  
 					
 					tempHtml += ("<table class=\"table100.ver1\" width=\"100%\"><tr><th>회사이름</th><th>현재가</th><th>등락률</th></tr>" + tempCont + "</table>");
