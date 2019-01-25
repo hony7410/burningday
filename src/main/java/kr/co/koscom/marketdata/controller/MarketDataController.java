@@ -1,6 +1,7 @@
 package kr.co.koscom.marketdata.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import kr.co.koscom.marketdata.api.LogpressoApiCaller;
 import kr.co.koscom.marketdata.api.MarketDataApiCaller;
 import kr.co.koscom.marketdata.model.HistoricalData;
 import kr.co.koscom.marketdata.model.Price;
+import pl.stock.algorithm.core.RSI;
 
 @Controller
 public class MarketDataController {
@@ -45,7 +47,47 @@ public class MarketDataController {
     	// return view
     	return "graph";
     }
-    
+    @RequestMapping(path = "/marketdata/analyze/{marketCode}/{issueCode}/{from}/{to}",
+    		method = { RequestMethod.GET, RequestMethod.POST } )
+    public String getRSIChart(@PathVariable String marketCode, @PathVariable String issueCode, @PathVariable String from, @PathVariable String to) {
+    	
+    	to = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
+    	
+    	HistoricalData[] his = marketDataApiCaller.getHistoricalData(marketCode.toLowerCase(), issueCode, from, to);
+    	
+    	RSI rsi = new RSI(14);
+    	
+    	double[] prizes = new double[his.length];
+    	for(int k = his.length-1; k >=0; --k)
+    	{
+    		prizes[k] = his[k].getTrdPrc();
+    	}
+    	
+    	double[] rsiResult = rsi.count(prizes);
+    	
+    	String s = "[";
+    	int hisIndex = his.length-1;
+    	for(int k = 0; k < his.length; ++k)
+    	{
+    		s += "{";
+    		if(k >= rsiResult.length)
+    		{
+    			s += "\"rsi\" : -1,"; 
+    		}
+    		else
+    		{
+    			s += "\"rsi\" : " + rsiResult[k] + ",";
+    		}
+    		
+    		s += "\"date\" : \"" + his[hisIndex-k].getBzDd() + "\",";
+    		s += "\"price\" : " + his[hisIndex-k].getTrdPrc();
+    		s += "},";
+    	}
+    	s+= "]";
+    	
+    	
+    	return s;
+    }
     @RequestMapping(path = "/marketdata/log/10m/{issueCode}",
     		method = { RequestMethod.GET, RequestMethod.POST } )
     public @ResponseBody JsonNode log10mJson(@PathVariable String issueCode) {
