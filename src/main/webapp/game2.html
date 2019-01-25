@@ -144,9 +144,13 @@
                             Fortune cookie
                         </h2> -->
                         <h3 class="post-subtitle">
-                            The early bird gets the worm, but the second mouse gets the cheese.
+                            	그래프 마지막날 +1 일의 가격 Up & Down 을 맞춰보세요
                         </h3>
-                        <div class="row control-group">
+                        <h3 class="post-subtitle">
+                            	점수 : 
+                            	<div id=score></div>
+                        </h3>
+                        <!-- <div class="row control-group">
 	                        <div id="fortuneCookieDiv" class="form-group col-xs-12 floating-label-form-group controls">
 	                        	<a><img id=fortuneCookie class="Image" src="/img/1.png"></a>
 	                        </div>
@@ -155,8 +159,19 @@
 	                        <div class="form-group col-xs-12">
 	                            <div id=fortuneCookieRecommand></div>
 	                        </div>
+	                    </div> -->
+	                    <div class="row control-group">
+	                    	<div id="chartContainer" style="height: 600px; width: 100%;"></div>
 	                    </div>
-	                    <hr>
+                    
+                    	<hr>
+                    	
+                    	<div class="row">
+	                        <div class="form-group col-xs-12">
+	                            <button id="upBtn" class="btn btn-default">UP!</button>
+	                            <button id="dnBtn" class="btn btn-default">DOWN!</button>
+	                        </div>
+	                    </div>
 	                
                     <!-- <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 24, 2014</p> -->
                 </div>
@@ -223,51 +238,105 @@
 
     <!-- Theme JavaScript -->
     <script src="js/clean-blog.min.js"></script>
+    
+    <!-- for chart -->
+	<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+	<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 
 	<script>
 	
-		var fortuneCookieOpen = false;
-		$( document ).ready(function() {
-		    console.log( "ready!" );
-		    //getTrend();
-		    
-		    $("#fortuneCookie").on('click', function() {
-		        //alert("test");
-		        if(!fortuneCookieOpen){
-		        	fortuneCookieRecc();
-		        	$("#fortuneCookie").fadeOut();
-					$("#fortuneCookie").attr('src',"/img/2.png");
-					$("#fortuneCookie").fadeIn();
-			    	fortuneCookieOpen = true;
-			    	return false;
-		        }else{
-		        	$("#fortuneCookie").fadeOut();
-		        	$("#fortuneCookie").attr('src',"/img/1.png");
-					$("#fortuneCookie").fadeIn();
-			    	fortuneCookieOpen = false;
-		        }
-		    	
-		    });
-		    
-		});
-		
-		function fortuneCookieRecc(){
-			
+		var companyCd="005930";
+		var companyNm="삼성전자";
+		var tradeJson;
+		var oneDay;
+		var oneDayPlus;
+		var score = 0;
+		function dataUpdate(){
 			$.get("/gamedata/fortunecookie/", function(data, status){
 				if (status == "success")
 				{
 					console.info(data);
 					//예제 {"등락율":"3.11","단축코드":"002990","현재가":"13250" ,"회사이름" : "금호산업"}
 					var jsonData = JSON.parse(data);
-					var tempCont = ("<tr><td><a href=\"http://localhost:8080/marketdata/graph/priceAll/"+ "kospi" + "/" + jsonData.회사이름 + "\">" + jsonData.회사이름 + "</a></td>" + "<td>"+ jsonData.현재가 +"</td><td>" + jsonData.등락율 + "</td></tr>");
-					var tempHtml = "<h5 class=\"post-subtitle\">" + getTimeFormat() + " 기준 </h5>";  
-					
-					tempHtml += ("<table class=\"table100.ver1\" width=\"100%\"><tr><th>회사이름</th><th>현재가</th><th>등락률</th></tr>" + tempCont + "</table>");
-					$("#fortuneCookieRecommand").html(tempHtml); 
+					companyCd = jsonData.단축코드;
+					companyNm = jsonData.회사이름;
 				}
 			});
 			
+			setTimeout(function () {
+				
+				$.get("/marketdata/historicalPrice/kospi/" + companyCd, function(data, status){
+					if (status == "success")
+					{
+						console.info(data);
+						var jsonData = JSON.parse(data);
+						console.info(data.length);
+						tradeJson = jsonData;
+						
+					}
+				});
+				
+			}, 1000);
 			
+			setTimeout(function () {
+				graphDraw(tradeJson);
+			}, 2000);
+		}
+		
+		$( document ).ready(function() {
+		    console.log( "ready!" );
+		    
+		    dataUpdate();
+		});
+		
+		var companyNmEn;
+		function graphDraw(jsonObj) {
+			
+			companyNmEn = companyNm.substring(0,1);
+			for(var i=1; i<companyNm.length; i++){
+				companyNmEn += "O";
+			}
+		
+			var options = {
+				title: {
+					text: companyNmEn
+				},
+				animationEnabled: true,
+				exportEnabled: true,
+				data: [
+				{
+					type: "spline", //change it to line, area, column, pie, etc
+					dataPoints: [
+						/* { x: 10, y: 10 },
+						{ x: 20, y: 12 },
+						{ x: 30, y: 8 },
+						{ x: 40, y: 14 },
+						{ x: 50, y: 6 },
+						{ x: 60, y: 24 },
+						{ x: 70, y: -4 },
+						{ x: 80, y: 10 } */
+					]
+				}
+				]
+			};
+			
+			
+			for(var i = 0; i < jsonObj.length - 5; i++) {
+			    var obj = jsonObj[jsonObj.length-i-1];
+			    console.log(obj);
+			    oneDayPlus = obj.trdPrc;
+				console.log(i);
+			    //options.data[0].dataPoints.push( { x : obj.bzDd , y : obj.trdPrc  });
+			    //var d = new Date("2015-03-25");
+			    var strDateFormat = obj.bzDd.substring(0, 4) + "-" + obj.bzDd.substring(4, 6) + "-" + obj.bzDd.substring(6, 8) ;
+			    //options.data[0].dataPoints.push( { x : Number(obj.bzDd) , y : obj.trdPrc  });
+			    if(i!=jsonObj.length - 5 - 1){
+			    	oneDay = obj.trdPrc;
+			    	options.data[0].dataPoints.push( { x : new Date(strDateFormat) , y : obj.trdPrc  });
+			    }
+			}
+			
+			$("#chartContainer").CanvasJSChart(options);
 		}
 		
 		function getTimeFormat(){
@@ -290,67 +359,33 @@
 			return today;
 		}
 		
-	
-		function getTrend() {
-			$.get("/trenddata/trend/", function(data, status){
-				if (status == "success")
-				{
-					console.info(data);
-					var jsonData = JSON.parse(data);
-					console.info(data.length);
-					var tempCont="";
-					for(var i = 0; i < jsonData.length; i++) {
-					    var obj = jsonData[i];
-						console.log(i);
-					    console.log(obj);
-					    
-					    var keywordz = obj.keywordz;
-					    var keywordzCont="" ;
-					    //for(var j = 0; j < 5; j++) {
-					    for(var j = 0; j < (keywordz.length > 3 ? 3 : keywordz.length); j++) {
-					    	keywordzCont += (keywordz[j].keyword + "(" + keywordz[j].freq + ")   "); 
-					    }
-					    tempCont += "<tr><td>"+ obj.topic +"</td><td>" + keywordzCont + "</td><td>" + obj.score + "</td></tr>";
-					    
-					}
-					
-					
-					var tempHtml = "<h5 class=\"post-subtitle\">" + getTimeFormat() + " 기준 </h5>";  
-					
-					tempHtml += "<table><tr><th>토픽</th><th>관련키워드</th><th>점수</th></tr>" + tempCont + "</table>";
-					$("#NowHotTopicDiv").html(tempHtml);
-				}
-			});
-		}
-	
-		$("#trendSearch").click(function(){
-		  //alert("The paragraph was clicked.");
-			trendSearch();
+		$("#upBtn").click(function(){
+			if(oneDay < oneDayPlus){
+				score += 10;
+				$("#score").fadeOut();
+				$("#score").html(score);
+				$("#score").fadeIn();
+				alert("맞았습니다!!");
+				
+			}else{
+				alert("틀렸습니다!!");
+			}
+			dataUpdate();
 		});
-	
-		function trendSearch() {
-			var trendKeyword = $("#trendKeyword").val();
-			$.get("/trenddata/company/" + trendKeyword, function(data, status){
-				if (status == "success")
-				{
-					console.info(data);
-					var jsonData = JSON.parse(data);
-					console.info(data.length);
-					var tempCont="";
-					for(var i = 0; i < jsonData.length; i++) {
-					    var obj = jsonData[i];
-						console.log(i);
-					    console.log(obj);
-					    tempCont += "<tr><td>"+ obj.market +"</td><td><a href=\"http://localhost:8080/marketdata/graph/priceAll/"+ obj.market + "/" + obj.symbol + "\">" + obj.name + "</a></td><td>" + obj.score + "</td></tr>";
-					    					    
-					}
-					var tempHtml = "<table><tr><th>마켓</th><th>종목</th><th>점수</th></tr>" + tempCont + "</table>";
-					$("#div1").html(tempHtml);
-				}
-
-			});
-		}
-	
+		
+		$("#dnBtn").click(function(){
+			if(oneDay > oneDayPlus){
+				score += 10;
+				$("#score").fadeOut();
+				$("#score").html(score);
+				$("#score").fadeIn();
+				alert("맞았습니다!!");
+			}else{
+				alert("틀렸습니다!!");
+			}
+			dataUpdate();
+		});
+		
 	</script>
 
 </body>
