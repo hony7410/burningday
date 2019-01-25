@@ -67,16 +67,17 @@ public class MarketDataController {
     	
     	String s = "[";
     	int hisIndex = his.length-1;
+    	int rsiIndex = 0;
     	for(int k = 0; k < his.length; ++k)
     	{
     		s += "{";
-    		if(k >= rsiResult.length)
+    		if(k >= his.length - rsiResult.length)
     		{
-    			s += "\"rsi\" : -1,"; 
+    			s += "\"rsi\" : " + rsiResult[rsiIndex++] + ",";
     		}
     		else
     		{
-    			s += "\"rsi\" : " + rsiResult[k] + ",";
+    			s += "\"rsi\" : -1,";
     		}
     		
     		s += "\"date\" : \"" + his[hisIndex-k].getBzDd() + "\",";
