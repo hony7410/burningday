@@ -88,7 +88,7 @@
                     <span class="sr-only">Toggle navigation</span>
                     Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="index.html">JOY!</a>
+                <a class="navbar-brand" href="index.html">PlayCHECK!</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -123,9 +123,9 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading">
-                        <h1>주식분석 JOY</h1>
+                        <h1>투자게임</h1>
                         <hr class="small">
-                        <span class="subheading">KOSCOM 주식게임</span>
+                        <span class="subheading">Fortune cookie</span>
                     </div>
                 </div>
             </div>
@@ -137,51 +137,25 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
-                        <h2 class="post-title">
+                        <!-- <h2 class="post-title">
                             Fortune cookie
-                        </h2>
+                        </h2> -->
                         <h3 class="post-subtitle">
                             The early bird gets the worm, but the second mouse gets the cheese.
                         </h3>
                         <div class="row control-group">
-	                        <div id="NowHotTopicDiv" class="form-group col-xs-12 floating-label-form-group controls">
-	                           
+	                        <div id="fortuneCookieDiv" class="form-group col-xs-12 floating-label-form-group controls">
+	                        	<a><img id=fortuneCookie class="Image" src="/img/fortunecookie.jpg"></a>
 	                        </div>
 	                    </div>
-	                    
+	                    <div class="row">
+	                        <div class="form-group col-xs-12">
+	                            <div id=fortuneCookieRecommand></div>
+	                        </div>
+	                    </div>
 	                    <hr>
 	                
-                    <!-- <a href="post.html"> -->
-                        <h2 class="post-title">
-                            test
-                        </h2>
-                        <h3 class="post-subtitle">
-                            hot topic 주식트랜드
-                        </h3>
-                    <!-- </a> -->
-                    <!-- <h4 class="post-subtitle">Trend Keyword</h4>  -->
-                    <form name="sentMessage" id="contactForm" novalidate>
-	                    <div class="row control-group">
-	                        <div class="form-group col-xs-12 floating-label-form-group controls">
-	                            <label>Trend Keyword</label>
-	                            <input type="text" class="form-control" placeholder="TrendKeyword" id="trendKeyword" required data-validation-required-message="Please enter your trend keyword.">
-	                            <p class="help-block text-danger"></p>
-	                        </div>
-	                    </div>
-	                    <div id="success"></div>
-	                    <div class="row">
-	                        <div class="form-group col-xs-12">
-	                            <button id="trendSearch" class="btn btn-default">Search</button>
-	                        </div>
-	                    </div>
-	                    <div class="row">
-	                        <div class="form-group col-xs-12">
-	                            <div id=div1></div>
-	                        </div>
-	                    </div>
-               		</form>
-                    
-                    <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 24, 2014</p>
+                    <!-- <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 24, 2014</p> -->
                 </div>
                 <hr>
                 
@@ -251,13 +225,33 @@
 	
 		$( document ).ready(function() {
 		    console.log( "ready!" );
-		    getTrend();
+		    //getTrend();
+		    
+		    $("#fortuneCookie").on('click', function() {
+		        //alert("test");
+		        
+		    	fortuneCookieRecc();
+		        
+		    });
+		    
 		});
 		
-		setInterval( function() {
-			getTrend();
-
-		}, 30000 );
+		function fortuneCookieRecc(){
+			
+			$.get("/gamedata/fortunecookie/", function(data, status){
+				if (status == "success")
+				{
+					console.info(data);
+					//예제 {"등락율":"3.11","단축코드":"002990","현재가":"13250" ,"회사이름" : "금호산업"}
+					var jsonData = JSON.parse(data);
+					var tempCont = ("<tr><td><a href=\"http://localhost:8080/marketdata/graph/priceAll/"+ "kospi" + "/" + jsonData.회사이름 + "\">" + jsonData.회사이름 + "</a></td>" + "<td>"+ jsonData.현재가 +"</td><td>" + jsonData.등락율 + "</td></tr>");
+					var tempHtml = "<h5 class=\"post-subtitle\">" + getTimeFormat() + " 기준 </h5>";  
+					
+					tempHtml += ("<table class=\"table100.ver1\" width=\"100%\"><tr><th>회사이름</th><th>현재가</th><th>등락률</th></tr>" + tempCont + "</table>");
+					$("#fortuneCookieRecommand").html(tempHtml); 
+				}
+			});
+		}
 		
 		function getTimeFormat(){
 			var today = new Date();

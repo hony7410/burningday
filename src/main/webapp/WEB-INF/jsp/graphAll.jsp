@@ -90,7 +90,7 @@
                     <span class="sr-only">Toggle navigation</span>
                     Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="/index.html">JOY!</a>
+                <a class="navbar-brand" href="/index.html">PlayCHECK!</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -100,7 +100,7 @@
                         <a href="/index.html">Home</a>
                     </li>
                     <li>
-                        <a href="about.html">About</a>
+                        <a href="/game.html">Lucky Game</a>
                     </li>
                     <li>
                         <a href="post.html">Sample Post</a>
@@ -124,7 +124,7 @@
                     <div class="site-heading">
                     	<h1>주식시세정보</h1>
                         <hr class="small">
-                        <h2 class="subheading">현재 주가 및 검색 트랜드</h2>
+                        <h2 class="subheading">현재 주가 및 검색 트렌드</h2>
                         <!-- <span class="meta">Posted by <a href="#">Start Bootstrap</a> on August 24, 2014</span> -->
                     </div>
                 </div>
@@ -142,15 +142,13 @@
                     <div id="chartContainer" style="height: 600px; width: 100%;"></div>
 					
                 
-                    <p>Koscom 주식시세 정보 Open Api 와 Naver 검색 트랜드 Open Api를 통해 주식 시세와 트랜드를 </p>
-
-                    <p>비교하여 상관관계를 분석하는데 목표가 있습니다.</p>
+                    <p>Koscom 주식시세 정보 Open Api 와 Naver 검색 트렌드 Open Api를 통해 주식 시세와 트렌드를 비교하여 상관관계를 분석하는데 목표가 있습니다.</p>
 
                     <h2 class="section-heading">Koscom 주식시세 API</h2>
 
                     <p>https://developers.koscom.co.kr/</p>
 
-                    <h2 class="section-heading">Naver 검색트랜드 API</h2>
+                    <h2 class="section-heading">Naver 검색트렌드 API</h2>
 
                     <p>https://developers.naver.com/docs/datalab/search/</p>
 <!-- 
@@ -235,7 +233,7 @@ $(document).ready(function() {
 
 setTimeout(function () {
 	graphDraw2();
-}, 2000);
+}, 1000);
 
 var tradeJson;
 var trendJson;
@@ -319,7 +317,7 @@ function graphDraw2() {
 			text: ${name}
 		},
 		subtitles: [{
-			text: "주식시세 및 검색 트랜드 상관관계"
+			text: "주식시세 및 검색 트렌드 상관관계"
 		}],
 		axisX: {
 			title: "날짜"
@@ -333,7 +331,7 @@ function graphDraw2() {
 			includeZero: false
 		},
 		axisY2: {
-			title: "트랜드 상대지수",
+			title: "트렌드 상대지수",
 			titleFontColor: "#C0504E",
 			lineColor: "#C0504E",
 			labelFontColor: "#C0504E",
@@ -370,7 +368,7 @@ function graphDraw2() {
 		},
 		{
 			type: "spline",
-			name: "트랜드",
+			name: "트렌드",
 			axisYType: "secondary",
 			showInLegend: true,
 			xValueFormatString: "MMM YYYY",
@@ -402,11 +400,11 @@ function graphDraw2() {
 	    options.data[0].dataPoints.push( { x : new Date(strDateFormat) , y : obj.trdPrc  });
 	}
 	
-	//트랜드 예시
+	//트렌드 예시
 	//{"startDate":"2019-01-01","endDate":"2019-01-25","timeUnit":"date","results":[{"title":"큐로홀딩스","keywords":["큐로홀딩스"],"data":[{"period":"2019-01-01","ratio":10.44776},{"period":"2019-01-02","ratio":46.26865},{"period":"2019-01-03","ratio":50.74626},{"period":"2019-01-04","ratio":43.28358},{"period":"2019-01-05","ratio":4.47761},{"period":"2019-01-06","ratio":17.91044},{"period":"2019-01-07","ratio":32.83582},{"period":"2019-01-08","ratio":64.1791},{"period":"2019-01-09","ratio":73.13432},{"period":"2019-01-10","ratio":47.76119},{"period":"2019-01-11","ratio":49.25373},{"period":"2019-01-12","ratio":8.95522},{"period":"2019-01-13","ratio":10.44776},{"period":"2019-01-14","ratio":49.25373},{"period":"2019-01-15","ratio":46.26865},{"period":"2019-01-16","ratio":50.74626},{"period":"2019-01-17","ratio":40.2985},{"period":"2019-01-18","ratio":55.22388},{"period":"2019-01-19","ratio":7.46268},{"period":"2019-01-20","ratio":5.97014},{"period":"2019-01-21","ratio":26.86567},{"period":"2019-01-22","ratio":37.31343},{"period":"2019-01-23","ratio":61.19402},{"period":"2019-01-24","ratio":100}]}]}
 	for(var i = 0; i < trendJson.results[0].data.length; i++) {
 	    var obj = trendJson.results[0].data[i];
-	    console.log("트랜드");
+	    console.log("트렌드");
 		console.log(i);
 	    console.log(obj);
 	    options.data[1].dataPoints.push( { x : new Date(obj.period) , y : obj.ratio  });
@@ -431,7 +429,7 @@ function graphDraw3(tradeJson, trendJson) {
 		exportEnabled: true,
 		animationEnabled: true,
 		title:{
-			text: "주가 VS 검색트랜드"
+			text: "주가 VS 검색트렌드"
 		},
 		subtitles: [{
 			text: "Click Legend to Hide or Unhide Data Series"
